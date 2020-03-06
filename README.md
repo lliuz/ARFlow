@@ -1,8 +1,8 @@
 ## ARFlow &mdash; Official PyTorch Implementation
 
-![Python 3.6](https://img.shields.io/badge/python-3.6-green.svg?style=plastic) ![PyTorch 1.1.0](https://img.shields.io/badge/pytorch-1.1.0-green.svg?style=plastic) ![License CC BY-NC](https://img.shields.io/badge/license-CC_BY--NC-green.svg?style=plastic)
+![Python 3.6](https://img.shields.io/badge/python-3.6-green.svg?style=plastic) ![PyTorch 1.1.0](https://img.shields.io/badge/pytorch-1.1.0-green.svg?style=plastic) ![License MIT](https://img.shields.io/github/license/lliuz/ARFlow)
 
-This repository contains the official PyTorch implementation of the paper "[Learning by Analogy: Reliable Supervision from Transformations for Unsupervised Optical Flow Estimation](https://arxiv.org/abs/xxxx.xxxx)".
+This repository contains the official PyTorch implementation of the paper "[Learning by Analogy: Reliable Supervision from Transformations for Unsupervised Optical Flow Estimation](https://arxiv.org/abs/2003.13045)".
 
 For any inquiries, please contact Liang Liu at [leonliuz@zju.edu.cn](mailto:leonliuz@zju.edu.cn)
 
@@ -27,7 +27,7 @@ sudo apt-get update && apt-get install -y libsm6 libxext6 libxrender-dev
 pip3 install 'opencv-python>=3.0,<4.0' path.py tensorboardX fast_slic
 ```
 
-If you have any trouble with the correlation package, we also provide an alternative implementation. You can modify the import lines in `models/pwclite.py` to use it.
+If you have any trouble with the correlation package, we also provide an alternative implementation. You can modify the import lines in [models/pwclite.py](./models/pwclite.py#L7) to use it.
 
 ### Inference
 
@@ -86,7 +86,7 @@ Due to copyright issues, please download the dataset from the official websites.
 - [KITTI Raw](http://www.cvlibs.net/datasets/kitti/raw_data.php), [KITTI 2015](http://www.cvlibs.net/download.php?file=data_scene_flow_multiview.zip), [KITTI 2012](http://www.cvlibs.net/download.php?file=data_stereo_flow_multiview.zip)
 - [FlyingChairs](https://lmb.informatik.uni-freiburg.de/resources/datasets/FlyingChairs.en.html#flyingchairs), [CityScapes](https://www.cityscapes-dataset.com/downloads/) 
 
-We have upload the Sintel Raw dataset to [Google Drive](coming soon) and [微云](coming soon). This dataset is created by manually dividing all frames into folders by shot. It should follow the license in the Sintel benchmark.
+We have upload the Sintel Raw dataset to [Google Drive](https://drive.google.com/file/d/1sDujszN5S0BZ2Eiwzh9vXQiOoen7gyYd/view?usp=sharing) and [Baidu Cloud (Key: mxe9)](https://pan.baidu.com/s/10P0UsaFw5z0ey1rdhN97LA). This dataset is created by manually dividing all frames into folders by shot. It should follow the license in the Sintel benchmark.
 
 ### Citation
 
