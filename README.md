@@ -94,10 +94,10 @@ If you think this work is useful for your research, please consider citing:
 
 ```
 @inproceedings{liu2020learning,
-  title={Learning by Analogy: Reliable Supervision from Transformations for Unsupervised Optical Flow Estimation},
-  author={Liang Liu, Jiangning Zhang, Ruifei He, Yong Liu, Yabiao Wang, Ying Tai, Donghao luo, Chengjie Wang, Jilin Li, Feiyue Huang},
-  booktitle={IEEE Conference on Computer Vision and Pattern Recognition(CVPR)},
-  year={2020}
+   title = {Learning by Analogy: Reliable Supervision from Transformations for Unsupervised Optical Flow Estimation},
+   author = {Liu, Liang and Zhang, Jiangning and He, Ruifei and Liu, Yong and Wang, Yabiao and Tai, Ying and Luo, Donghao and Wang, Chengjie and Li, Jilin and Huang, Feiyue},
+   booktitle = {IEEE Conference on Computer Vision and Pattern Recognition(CVPR)},
+   year = {2020}
 }
 ```
 
