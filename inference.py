@@ -34,8 +34,8 @@ class TestHelper():
         return model
 
     def run(self, imgs):
-        imgs = [ts.input_transform(img).unsqueeze(0) for img in imgs]
-        img_pair = torch.cat(imgs, 1).to(ts.device)
+        imgs = [self.input_transform(img).unsqueeze(0) for img in imgs]
+        img_pair = torch.cat(imgs, 1).to(self.device)
         return self.model(img_pair)
 
 
