@@ -51,7 +51,9 @@ We recommend input with 384x640 for KITTI and Cityscapes models, 448x1024 for Si
 
 ### Training
 
-Here we provide the complete training pipeline for ARFlow on Sintel dataset:
+Here we provide the complete training pipeline for ARFlow on Sintel and KITTI datasets:
+
+#### Sintel dataset
 
 1. Pre-train on the Sintel raw movie. Also, you can skip this step with [our pretrained model](./checkpoints/Sintel/pwclite_raw.tar). 
 
@@ -69,6 +71,12 @@ Here we provide the complete training pipeline for ARFlow on Sintel dataset:
    ```
 
 > The default configuration uses the whole training set for training and validation. We strongly recommend you use the re-split sets as in our ablation studies. You can modify the config file by setting `train_subsplit` to 'train' and setting  `val_subsplit` to 'val'.
+
+#### KITTI dataset
+
+The pipeline is similar to Sintel, refer to [configs](./configs) for more details. 
+
+> You can pre-train on KITTI raw data, and then fine-tuning on the multi-view extension, or directly train on the multi-view extension. The final results should be similar.   
 
 ### Evaluation
 

@@ -141,3 +141,131 @@ class Sintel(ImgSeqDataset):
             samples.append(s)
 
         return samples
+
+
+class KITTIRawFile(ImgSeqDataset):
+    def __init__(self, root, sp_file, n_frames=2, ap_transform=None,
+                 transform=None, target_transform=None, co_transform=None):
+        self.sp_file = sp_file
+        super(KITTIRawFile, self).__init__(root, n_frames,
+                                           input_transform=transform,
+                                           target_transform=target_transform,
+                                           co_transform=co_transform,
+                                           ap_transform=ap_transform)
+
+    def collect_samples(self):
+        samples = []
+        with open(self.sp_file, 'r') as f:
+            for line in f.readlines():
+                sp = line.split()
+                s = {'imgs': [sp[i] for i in range(self.n_frames)]}
+                samples.append(s)
+            return samples
+
+
+class KITTIFlowMV(ImgSeqDataset):
+    """
+    This dataset is used for unsupervised training only
+    """
+
+    def __init__(self, root, n_frames=2,
+                 transform=None, co_transform=None, ap_transform=None, ):
+        super(KITTIFlowMV, self).__init__(root, n_frames,
+                                          input_transform=transform,
+                                          co_transform=co_transform,
+                                          ap_transform=ap_transform)
+
+    def collect_samples(self):
+        flow_occ_dir = 'flow_' + 'occ'
+        assert (self.root / flow_occ_dir).isdir()
+
+        img_l_dir, img_r_dir = 'image_2', 'image_3'
+        assert (self.root / img_l_dir).isdir() and (self.root / img_r_dir).isdir()
+
+        samples = []
+        for flow_map in sorted((self.root / flow_occ_dir).glob('*.png')):
+            flow_map = flow_map.basename()
+            root_filename = flow_map[:-7]
+
+            for img_dir in [img_l_dir, img_r_dir]:
+                img_list = (self.root / img_dir).files('*{}*.png'.format(root_filename))
+                img_list.sort()
+
+                for st in range(0, len(img_list) - self.n_frames + 1):
+                    seq = img_list[st:st + self.n_frames]
+                    sample = {}
+                    sample['imgs'] = []
+                    for i, file in enumerate(seq):
+                        frame_id = int(file[-6:-4])
+                        if 12 >= frame_id >= 9:
+                            break
+                        sample['imgs'].append(self.root.relpathto(file))
+                    if len(sample['imgs']) == self.n_frames:
+                        samples.append(sample)
+        return samples
+
+
+class KITTIFlow(ImgSeqDataset):
+    """
+    This dataset is used for validation only, so all files about target are stored as
+    file filepath and there is no transform about target.
+    """
+
+    def __init__(self, root, n_frames=2, transform=None):
+        super(KITTIFlow, self).__init__(root, n_frames, input_transform=transform)
+
+    def __getitem__(self, idx):
+        s = self.samples[idx]
+
+        # img 1 2 for 2 frames, img 0 1 2 for 3 frames.
+        st = 1 if self.n_frames == 2 else 0
+        ed = st + self.n_frames
+        imgs = [s['img{}'.format(i)] for i in range(st, ed)]
+
+        inputs = [imageio.imread(self.root / p).astype(np.float32) for p in imgs]
+        raw_size = inputs[0].shape[:2]
+
+        data = {
+            'flow_occ': self.root / s['flow_occ'],
+            'flow_noc': self.root / s['flow_noc'],
+        }
+
+        data.update({  # for test set
+            'im_shape': raw_size,
+            'img1_path': self.root / s['img1'],
+        })
+
+        if self.input_transform is not None:
+            inputs = [self.input_transform(i) for i in inputs]
+        data.update({'img{}'.format(i + 1): inputs[i] for i in range(self.n_frames)})
+        return data
+
+    def collect_samples(self):
+        '''Will search in training folder for folders 'flow_noc' or 'flow_occ'
+               and 'colored_0' (KITTI 2012) or 'image_2' (KITTI 2015) '''
+        flow_occ_dir = 'flow_' + 'occ'
+        flow_noc_dir = 'flow_' + 'noc'
+        assert (self.root / flow_occ_dir).isdir()
+
+        img_dir = 'image_2'
+        assert (self.root / img_dir).isdir()
+
+        samples = []
+        for flow_map in sorted((self.root / flow_occ_dir).glob('*.png')):
+            flow_map = flow_map.basename()
+            root_filename = flow_map[:-7]
+
+            flow_occ_map = flow_occ_dir + '/' + flow_map
+            flow_noc_map = flow_noc_dir + '/' + flow_map
+            s = {'flow_occ': flow_occ_map, 'flow_noc': flow_noc_map}
+
+            img1 = img_dir + '/' + root_filename + '_10.png'
+            img2 = img_dir + '/' + root_filename + '_11.png'
+            assert (self.root / img1).isfile() and (self.root / img2).isfile()
+            s.update({'img1': img1, 'img2': img2})
+            if self.n_frames == 3:
+                img0 = img_dir + '/' + root_filename + '_09.png'
+                assert (self.root / img0).isfile()
+                s.update({'img0': img0})
+            samples.append(s)
+        return samples

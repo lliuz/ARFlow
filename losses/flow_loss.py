@@ -1,6 +1,6 @@
 import torch.nn as nn
 import torch.nn.functional as F
-from .loss_blocks import SSIM, smooth_grad_1st, TernaryLoss
+from .loss_blocks import SSIM, smooth_grad_1st, smooth_grad_2nd, TernaryLoss
 from utils.warp_utils import flow_warp
 from utils.warp_utils import get_occu_mask_bidirection, get_occu_mask_backward
 
@@ -27,8 +27,12 @@ class unFlowLoss(nn.modules.Module):
         return sum([l.mean() for l in loss]) / occu_mask1.mean()
 
     def loss_smooth(self, flow, im1_scaled):
+        if 'smooth_2nd' in self.cfg and self.cfg.smooth_2nd:
+            func_smooth = smooth_grad_2nd
+        else:
+            func_smooth = smooth_grad_1st
         loss = []
-        loss += [smooth_grad_1st(flow, im1_scaled, self.cfg.alpha)]
+        loss += [func_smooth(flow, im1_scaled, self.cfg.alpha)]
         return sum([l.mean() for l in loss])
 
     def forward(self, output, target):
