@@ -69,7 +69,8 @@ class TrainFramework(BaseTrainer):
                     noc_t = torch.ones_like(noc_t)
                 l_atst = ((flow_t_pred - flow_t).abs() + self.cfg.ar_eps) ** self.cfg.ar_q
                 l_atst = (l_atst * noc_t).mean() / (noc_t.mean() + 1e-7)
-                l_atst += self.cfg.w_ar * l_atst
+
+                loss += self.cfg.w_ar * l_atst
             else:
                 l_atst = torch.zeros_like(loss)
 
