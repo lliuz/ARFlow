@@ -8,10 +8,6 @@ def init_logger(level='INFO', log_dir='./', log_name='main_logger', filename='ma
 
     logger = logging.getLogger(log_name)
 
-    # logging to file
-    # fh = logging.handlers.RotatingFileHandler(
-    #     Path(log_dir) / 'main_logger_{:%H%M%S}.log'.format(datetime.now()),
-    #     'w', 20 * 1024 * 1024, 5)
     fh = logging.handlers.RotatingFileHandler(
         Path(log_dir) / filename, 'w', 20 * 1024 * 1024, 5)
     formatter = logging.Formatter('%(asctime)s %(levelname)5s - %(name)s '

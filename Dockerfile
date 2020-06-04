@@ -21,7 +21,7 @@ RUN pip3 install torchvision==0.3.0
 
 COPY models/correlation_package /root/correlation_package
 RUN cd /root/correlation_package && python3 setup.py install
-RUN mv /root/correlation_package /usr/local/lib/python3.5/dist-packages/
+RUN mv /root/correlation_package /usr/local/lib/python3.6/dist-packages/
 
 # Install dependencies for training
 RUN apt-get update && \

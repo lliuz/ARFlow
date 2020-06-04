@@ -14,7 +14,7 @@ if __name__ == '__main__':
     parser.add_argument('-c', '--config', default='configs/sintel_ft.json')
     parser.add_argument('-e', '--evaluate', action='store_true')
     parser.add_argument('-m', '--model', default=None)
-
+    parser.add_argument('--n_gpu', type=int, default=1)
     args = parser.parse_args()
 
     with open(args.config) as f:
@@ -31,6 +31,7 @@ if __name__ == '__main__':
 
     if args.model is not None:
         cfg.train.pretrained_model = args.model
+    cfg.train.n_gpu = args.n_gpu
 
     # store files day by day
     curr_time = datetime.datetime.now().strftime("%y%m%d%H%M%S")
