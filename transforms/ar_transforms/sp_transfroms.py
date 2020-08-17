@@ -226,7 +226,7 @@ class RandomAffineFlow(nn.Module):
             squeeze.uniform_(min_squeeze, max_squeeze)
             tx.uniform_(-max_translate, max_translate)
             ty.uniform_(-max_translate, max_translate)
-            phi.uniform_(-min_rotate, max_rotate)
+            phi.uniform_(min_rotate, max_rotate)
 
             # construct affine parameters
             sx = zoom * squeeze
@@ -309,7 +309,7 @@ class RandomAffineFlow(nn.Module):
                     max_translate=self.cfg.trans[1],
                     min_zoom=self.cfg.zoom[2], max_zoom=self.cfg.zoom[3],
                     min_squeeze=self.cfg.squeeze[2], max_squeeze=self.cfg.squeeze[3],
-                    min_rotate=-self.cfg.rotate[2], max_rotate=self.cfg.rotate[2],
+                    min_rotate=self.cfg.rotate[2], max_rotate=self.cfg.rotate[2],
                     validate_size=[height, width])
             )
 
