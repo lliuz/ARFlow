@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import inspect
 
 
 def mesh_grid(B, H, W):
@@ -85,7 +86,10 @@ def flow_warp(x, flow12, pad='border', mode='bilinear'):
     base_grid = mesh_grid(B, H, W).type_as(x)  # B2HW
 
     v_grid = norm_grid(base_grid + flow12)  # BHW2
-    im1_recons = nn.functional.grid_sample(x, v_grid, mode=mode, padding_mode=pad)
+    if 'align_corners' in inspect.getfullargspec(torch.nn.functional.grid_sample).args:
+        im1_recons = nn.functional.grid_sample(x, v_grid, mode=mode, padding_mode=pad, align_corners=True)
+    else:
+        im1_recons = nn.functional.grid_sample(x, v_grid, mode=mode, padding_mode=pad)
     return im1_recons
 
 
