@@ -5,7 +5,7 @@ RUN rm /etc/apt/sources.list.d/*  && rm -rf /var/lib/apt/lists/*
 # Install Python 3.6
 RUN apt-get update && \
     apt-get install -y software-properties-common && \
-    add-apt-repository ppa:jonathonf/python-3.6 && \
+    add-apt-repository ppa:deadsnakes/ppa && \
     apt-get update -y  && \
     apt-get install -y build-essential python3.6 python3.6-dev python3-pip && \
     apt-get autoremove && \
@@ -30,4 +30,10 @@ RUN apt-get update && \
     apt-get clean
 
 RUN pip3 install 'opencv-python>=3.0,<4.0' path.py tensorboardX fast_slic
+
+# Required for opencv2
+RUN apt-get update && \
+    apt-get install -y ffmpeg libsm6 libxext6 && \
+    apt-get autoremove && \
+    apt-get clean
 
