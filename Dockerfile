@@ -31,3 +31,9 @@ RUN apt-get update && \
 
 RUN pip3 install 'opencv-python>=3.0,<4.0' path.py tensorboardX fast_slic
 
+# Required for opencv2
+RUN apt-get update && \
+    apt-get install -y ffmpeg libsm6 libxext6 && \
+    apt-get autoremove && \
+    apt-get clean
+
