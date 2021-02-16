@@ -5,7 +5,7 @@ RUN rm /etc/apt/sources.list.d/*  && rm -rf /var/lib/apt/lists/*
 # Install Python 3.6
 RUN apt-get update && \
     apt-get install -y software-properties-common && \
-    add-apt-repository ppa:jonathonf/python-3.6 && \
+    add-apt-repository ppa:deadsnakes/ppa && \
     apt-get update -y  && \
     apt-get install -y build-essential python3.6 python3.6-dev python3-pip && \
     apt-get autoremove && \
